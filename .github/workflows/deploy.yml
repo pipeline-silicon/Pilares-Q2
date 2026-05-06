@@ -1,0 +1,34 @@
+name: Deploy pilares
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'index.html'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar StatiCrypt
+        run: npm install -g staticrypt
+
+      - name: Criar pasta de saída
+        run: mkdir -p encrypted
+
+      - name: Criptografar HTML
+        run: staticrypt index.html --password ${{ secrets.STATICRYPT_PASSWORD }} --template .staticrypt/login-template.html --directory encrypted --short
+
+      - name: Verificar arquivo gerado
+        run: ls -la encrypted/
+
+      - name: Publicar no GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./encrypted

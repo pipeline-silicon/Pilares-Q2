@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pilares Comerciais 2025 — Silicon</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --yellow: #F6C847; --orange: #FF7800; --red: #F03200; --purple: #7F3F98;
+    --bg: #191919; --bg-card: #242424; --bg-card2: #2a2a2a;
+    --text: #ffffff; --text-muted: rgba(255,255,255,0.55); --text-dim: rgba(255,255,255,0.35);
+    --border: rgba(255,255,255,0.08);
+    --grad: linear-gradient(30deg, #F6C847 0%, #F03200 65%, #7F3F98 100%);
+  }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(25,25,25,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    height: 60px;
+  }
+  .topbar-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 40px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .topbar-logo {
+    flex-shrink: 0;
+    margin-right: 40px;
+    display: flex;
+    align-items: center;
+  }
+  .topbar-logo svg { height: 28px; width: auto; }
+  .topbar-separator {
+    width: 1px; height: 24px; background: rgba(255,255,255,0.15);
+    margin: 0 20px; flex-shrink: 0;
+  }
+  .topbar-campaign svg { height: 22px; width: auto; display: block; opacity: 0.85; }
+  .nav-tabs {
+    display: flex;
+    gap: 0;
+    flex: 1;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    position: relative;
+    padding: 0 20px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.2s;
+    border: none;
+    background: none;
+    font-family: 'Poppins', sans-serif;
+    user-select: none;
+  }
+  .nav-tab:hover { color: rgba(255,255,255,0.7); }
+  .nav-tab.active { color: var(--text); }
+  .nav-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 20px; right: 20px;
+    height: 2px;
+    background: linear-gradient(90deg, #F6C847, #F03200, #7F3F98);
+    border-radius: 2px 2px 0 0;
+  }
+
+  /* PAGE CONTENT */
+  .page { display: none; padding: 32px 40px 80px; max-width: 1100px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* HEADER dentro da page */
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    gap: 24px;
+    animation: fadeUp 0.4s ease both;
+  }
+  .header-eyebrow {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.18em;
+    color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px;
+  }
+  .header-title {
+    font-size: 32px; font-weight: 700; line-height: 1.1;
+    background: var(--grad);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+
+  /* QUARTER LABEL */
+  .quarter-label { display: flex; align-items: center; margin-bottom: 24px; }
+  .quarter-badge {
+    font-size: 20px; font-weight: 700; letter-spacing: 0.02em;
+    padding: 6px 20px; border-radius: 100px; text-transform: uppercase; line-height: 1;
+  }
+  .q1-badge { background: rgba(45,182,116,0.15); color: #2DB674; border: 1px solid rgba(45,182,116,0.3); }
+  .q2-badge { background: rgba(127,63,152,0.15); color: #C07FE0; border: 1px solid rgba(127,63,152,0.3); }
+  .quarter-divider-line { display: none; }
+
+  /* Q1 BLOCK */
+  .q1-block {
+    background: none; border: none;
+    border-radius: 0; padding: 0; margin-bottom: 28px;
+    position: relative; overflow: visible;
+    animation: fadeUp 0.4s ease 0.05s both;
+  }
+  .q1-block::before { display: none; }
+  .q1-title { display: none; }
+  .quarter-title {
+    font-size: 15px; font-weight: 600; color: rgba(255,255,255,1);
+    margin-left: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .q1-items { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .q1-item {
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    border-radius: 10px; padding: 22px 24px;
+    font-size: 16px; font-weight: 500; color: rgba(255,255,255,0.9); line-height: 1.6;
+  }
+
+  /* CONNECTOR */
+  .connector { display: none; }
+  .connector-line { width: 1px; height: 28px; background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(127,63,152,0.8)); }
+  .connector-dot { display: none; }
+  .connector-arrow {
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 7px solid rgba(127,63,152,0.8);
+  }
+
+  /* Q2 GRID */
+  .q2-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: stretch; }
+  .track-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; height: 100%;
+    animation: fadeUp 0.4s ease both;
+  }
+  .track-card:nth-child(1) { animation-delay: 0.15s; }
+  .track-card:nth-child(2) { animation-delay: 0.22s; }
+  .track-card:nth-child(3) { animation-delay: 0.29s; }
+  .track-accent-bar { height: 3px; width: 100%; }
+  .bar-orange { background: linear-gradient(90deg, #F6C847, #F03200); }
+  .bar-red { background: linear-gradient(90deg, #F03200, #C05020); }
+  .bar-purple { background: linear-gradient(90deg, #F03200, #7F3F98); }
+  .track-header { padding: 24px 24px 18px; border-bottom: 1px solid var(--border); }
+  .track-owner { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+  .owner-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .owner-label { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.7); }
+  .track-title { font-size: 19px; font-weight: 700; line-height: 1.2; margin-bottom: 8px; }
+  .track-subtitle { font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.55); line-height: 1.5; }
+  .track-steps { padding: 20px 24px 24px; flex: 1; display: flex; flex-direction: column; gap: 14px; justify-content: space-between; }
+  .step { display: flex; gap: 10px; align-items: flex-start; }
+  .step-num {
+    font-size: 11px; font-weight: 700; min-width: 24px; height: 24px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .step-text { font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.82); line-height: 1.55; }
+  .step-text strong { font-weight: 600; color: rgba(255,255,255,0.95); }
+  .dot-orange { background: #FF7800; }
+  .dot-red { background: #F03200; }
+  .dot-purple { background: #7F3F98; }
+  .num-orange { background: rgba(255,120,0,0.18); color: #FF9D40; }
+  .num-red { background: rgba(240,50,0,0.18); color: #FF6040; }
+  .num-purple { background: rgba(127,63,152,0.22); color: #C07FE0; }
+  .dot-teal { background: #42C0B5; }
+  .bar-teal { background: linear-gradient(90deg, #42C0B5, #1E8C8C); }
+  .num-teal { background: rgba(66,192,181,0.18); color: #42C0B5; }
+
+  /* EMPTY STATE */
+  .empty-state {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 320px; gap: 16px; opacity: 0.35;
+  }
+  .empty-icon { font-size: 40px; }
+  .empty-label { font-size: 13px; font-weight: 400; color: var(--text-muted); }
+
+  /* ON DECO */
+  .on-deco {
+    position: fixed; bottom: -60px; right: -40px; width: 220px; opacity: 0.04; pointer-events: none;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 800px) {
+    .topbar-inner { padding: 0 16px; }
+    .topbar-logo { margin-right: 16px; }
+    .nav-tab { padding: 0 12px; font-size: 13px; }
+    .page { padding: 32px 20px 60px; }
+    .q2-grid { grid-template-columns: 1fr; }
+    .q1-items { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+
+<!-- TOPBAR -->
+<nav class="topbar">
+<div class="topbar-inner">
+  <div class="topbar-logo"><?xml version="1.0" encoding="UTF-8"?><svg style="height:28px;width:auto;display:block;" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="74 74 1062 212"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:url(#linear-gradient);}</style><linearGradient id="linear-gradient" x1="774.42" y1="271.98" x2="1082.52" y2="94.1" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f6c847"/><stop offset=".07" stop-color="#f5c244"/><stop offset=".15" stop-color="#f5b13c"/><stop offset=".25" stop-color="#f4962f"/><stop offset=".36" stop-color="#f2701d"/><stop offset=".47" stop-color="#f04107"/><stop offset=".5" stop-color="#f03200"/><stop offset=".54" stop-color="#e33311"/><stop offset=".65" stop-color="#bf3740"/><stop offset=".75" stop-color="#a33a66"/><stop offset=".85" stop-color="#8f3d81"/><stop offset=".93" stop-color="#833e92"/><stop offset="1" stop-color="#7f3f98"/></linearGradient></defs><path class="cls-1" d="m236.35,208.01c0-32.86-23.56-53.28-61.47-53.28h-38.63c-30.94,0-30.94-17.12-30.94-22.75s0-22.74,30.94-22.74h77.57c8.43,0,15.27-6.84,15.27-15.27s-6.84-15.27-15.27-15.27h-77.57c-37.91,0-61.47,20.42-61.47,53.28s23.56,53.29,61.47,53.29h38.63c30.94,0,30.94,17.12,30.94,22.74s0,22.75-30.94,22.75h-77.57c-8.43,0-15.27,6.84-15.27,15.27s6.84,15.27,15.27,15.27h77.57c37.91,0,61.47-20.42,61.47-53.29Zm224.43,38.21c0-8.43-6.84-15.27-15.27-15.27h-46.62c-22.07,0-40.02-17.95-40.02-40.02v-97.17c0-8.43-6.84-15.27-15.27-15.27s-15.27,6.84-15.27,15.27v97.17c0,38.9,31.65,70.55,70.55,70.55h46.62c8.43,0,15.27-6.84,15.27-15.27Zm248.36-12.19c5.64-6.27,5.12-15.92-1.15-21.56-6.27-5.64-15.92-5.13-21.56,1.15-12.38,13.77-30.09,21.67-48.58,21.67-36.01,0-65.3-29.29-65.3-65.3s29.29-65.3,65.3-65.3c17.4,0,33.77,6.77,46.09,19.05,5.97,5.96,15.63,5.93,21.59-.03,5.96-5.97,5.94-15.64-.03-21.59-18.09-18.03-42.11-27.96-67.65-27.96-52.84,0-95.83,42.99-95.83,95.83s42.99,95.83,95.83,95.83c27.14,0,53.12-11.58,71.29-31.79Zm-416.26,11.99V93.97c0-8.43-6.84-15.27-15.27-15.27s-15.27,6.84-15.27,15.27v152.06c0,8.43,6.84,15.27,15.27,15.27s15.27-6.84,15.27-15.27Zm223.13,0V93.97c0-8.43-6.84-15.27-15.27-15.27s-15.27,6.84-15.27,15.27v152.06c0,8.43,6.84,15.27,15.27,15.27s15.27-6.84,15.27-15.27Z"/><path class="cls-2" d="m820.51,265.83c-53.21,0-96.5-43.29-96.5-96.5,0-29.45,11.91-55.82,32.67-72.34,6.59-5.23,16.19-4.15,21.45,2.45,5.25,6.6,4.15,16.21-2.45,21.45-13.24,10.53-21.14,28.64-21.14,48.44,0,36.37,29.6,65.97,65.97,65.97s65.96-29.6,65.96-65.97c0-19.8-7.9-37.91-21.14-48.44-6.6-5.25-7.69-14.86-2.45-21.45,5.26-6.6,14.86-7.69,21.45-2.45,20.76,16.52,32.67,42.89,32.67,72.34,0,53.21-43.29,96.5-96.49,96.5Zm-.37-200c-12.3,0-22.27,9.97-22.27,22.27s9.97,22.27,22.27,22.27,22.27-9.97,22.27-22.27-9.97-22.27-22.27-22.27h0Zm148.79,180.57v-78.81c0-34.67,28.21-62.88,62.88-62.88s62.88,28.21,62.88,62.88v78.48c0,8.43,6.84,15.27,15.27,15.27s15.27-6.84,15.27-15.27v-78.48c0-51.51-41.9-93.42-93.42-93.42s-93.42,41.9-93.42,93.42v78.81c0,8.43,6.84,15.27,15.27,15.27s15.27-6.84,15.27-15.27Z"/></svg></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab(this, 'venda')">Venda no Centro</button>
+    <button class="nav-tab" onclick="switchTab(this, 'barranco')">Consolidação do Barranco</button>
+    <button class="nav-tab" onclick="switchTab(this, 'usa')">Tração USA</button>
+    <button class="nav-tab" onclick="switchTab(this, 'inovacao')">Consolidação Inovação</button>
+  </div>
+</div>
+</nav>
+
+<!-- PAGE: VENDA NO CENTRO -->
+<div class="page active" id="page-venda">
+  <div class="page-header">
+    <div><div class="header-title">VENDA NO CENTRO</div></div>
+  </div>
+  <div class="quarter-label">
+    <span class="quarter-badge q1-badge">Q1</span><span class="quarter-title">Framework Comercial</span>
+    <div class="quarter-divider-line"></div>
+  </div>
+  <div class="q1-block">
+    <div class="q1-title">Framework Comercial</div>
+    <div class="q1-items"><div class="q1-item">Conectar todas as áreas à estratégia de vendas.</div><div class="q1-item">Implantar e otimizar as PRs e planos de ação.</div></div>
+  </div>
+  <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+  <div class="quarter-label">
+    <span class="quarter-badge q2-badge">Q2</span>
+    <div class="quarter-divider-line"></div>
+  </div>
+  <div class="q2-grid" style="grid-template-columns:repeat(3, 1fr);">
+    <div class="track-card">
+      <div class="track-accent-bar bar-purple"></div>
+      <div class="track-header">
+        <div class="track-owner"><span class="owner-dot dot-purple"></span><span class="owner-label">Tatiane</span></div>
+        <div class="track-title">Framework de Pipeline</div>
+        <div class="track-subtitle">Integração entre marketing e vendas para otimizar e acelerar a geração de receita</div>
+      </div>
+      <div class="track-steps">
+        <div class="step"><span class="step-num num-purple">1</span><span class="step-text">Padronizar Pipeline Review</span></div>
+        <div class="step"><span class="step-num num-purple">2</span><span class="step-text">Organizar governança de execução</span></div>
+        <div class="step"><span class="step-num num-purple">3</span><span class="step-text">Criar critérios de priorização</span></div>
+        <div class="step"><span class="step-num num-purple">4</span><span class="step-text">Padronizar acompanhamento</span></div>
+        <div class="step"><span class="step-num num-purple">5</span><span class="step-text">Criar playbook de ações escaláveis</span></div>
+        <div class="step"><span class="step-num num-purple">6</span><span class="step-text">Medir efetividade inicial</span></div>
+        <div class="step"><span class="step-num num-purple">7</span><span class="step-text">Ajustar e consolidar framework</span></div>
+      </div>
+    </div>
+    <div class="track-card">
+      <div class="track-accent-bar bar-orange"></div>
+      <div class="track-header">
+        <div class="track-owner"><span class="owner-dot dot-orange"></span><span class="owner-label">José Lucas</span></div>
+        <div class="track-title">Produtos &amp; Portfolio</div>
+        <div class="track-subtitle">Mapeamento e classificação do portfólio atual</div>
+      </div>
+      <div class="track-steps">
+        <div class="step"><span class="step-num num-orange">1</span><span class="step-text">Levantar o portfólio atual</span></div>
+        <div class="step"><span class="step-num num-orange">2</span><span class="step-text">Mapear histórico comercial dos produtos</span></div>
+        <div class="step"><span class="step-num num-orange">3</span><span class="step-text">Mapear complexidade operacional</span></div>
+        <div class="step"><span class="step-num num-orange">4</span><span class="step-text">Analisar aderência por BU e perfil de cliente</span></div>
+        <div class="step"><span class="step-num num-orange">5</span><span class="step-text">Classificar criticidade do portfólio</span></div>
+        <div class="step"><span class="step-num num-orange">6</span><span class="step-text">Definir diretriz por produto/SKU</span></div>
+        <div class="step"><span class="step-num num-orange">7</span><span class="step-text">Validar recomendações com lideranças</span></div>
+      </div>
+    </div>
+    <div class="track-card">
+      <div class="track-accent-bar bar-red"></div>
+      <div class="track-header">
+        <div class="track-owner"><span class="owner-dot dot-red"></span><span class="owner-label">Emanuel</span></div>
+        <div class="track-title">Pós-venda</div>
+        <div class="track-subtitle">Redesenho do modelo de atuação</div>
+      </div>
+      <div class="track-steps">
+        <div class="step"><span class="step-num num-red">1</span><span class="step-text">Mapear o processo atual</span></div>
+        <div class="step"><span class="step-num num-red">2</span><span class="step-text">Redesenhar o modelo de atuação</span></div>
+        <div class="step"><span class="step-num num-red">3</span><span class="step-text">Construir o playbook</span></div>
+        <div class="step"><span class="step-num num-red">4</span><span class="step-text">Validar com operações e C-level</span></div>
+        <div class="step"><span class="step-num num-red">5</span><span class="step-text">Definir KPIs de performance</span></div>
+        <div class="step"><span class="step-num num-red">6</span><span class="step-text">Mutirão de chamados em aberto</span></div>
+        <div class="step"><span class="step-num num-red">7</span><span class="step-text">Contratação e onboarding de pessoa-chave</span></div>
+        <div class="step"><span class="step-num num-red">8</span><span class="step-text">Handoff para operações</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: CONSOLIDAÇÃO DO BARRANCO -->
+<div class="page" id="page-barranco">
+  <div class="page-header">
+    <div><div class="header-title">CONSOLIDAÇÃO DO BARRANCO</div></div>
+  </div>
+  <div class="quarter-label">
+    <span class="quarter-badge q1-badge">Q1</span><span class="quarter-title">Estruturação da Operação</span>
+    <div class="quarter-divider-line"></div>
+  </div>
+  <div class="q1-block">
+    <div class="q1-title">Estruturação da Operação</div>
+    <div class="q1-items" style="grid-template-columns: repeat(4, 1fr);">
+<div class="q1-item">Ponta a Ponta</div><div class="q1-item">Organograma</div><div class="q1-item">Rituais estratégicos</div><div class="q1-item">Do desafio ao resultado</div>
+    </div>
+  </div>
+  <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+  <div class="quarter-label">
+    <span class="quarter-badge q2-badge">Q2</span>
+    <div class="quarter-divider-line"></div>
+  </div>
+  <div class="q2-grid">
+    <div class="track-card">
+      <div class="track-accent-bar bar-orange"></div>
+      <div class="track-header">
+        <div class="track-owner">
+          <span class="owner-dot" style="background:rgba(255,255,255,0.2);"></span>
+          <span class="owner-label" style="color:rgba(255,255,255,0.2);">A definir</span>
+        </div>
+        <div class="track-title">Pós-Vendas</div>
+        <div class="track-subtitle"></div>
+      </div>
+      <div class="track-steps" style="justify-content:center;align-items:center;min-height:80px;">
+        <div style="font-size:11px;color:rgba(255,255,255,0.25);font-weight:400;text-align:center;line-height:1.6;">
+          Aguardando informações<br>e responsáveis
+        </div>
+      </div>
+    </div>
+    <div class="track-card">
+      <div class="track-accent-bar bar-red"></div>
+      <div class="track-header">
+        <div class="track-owner">
+          <span class="owner-dot" style="background:rgba(255,255,255,0.2);"></span>
+          <span class="owner-label" style="color:rgba(255,255,255,0.2);">A definir</span>
+        </div>
+        <div class="track-title">Ponta a Ponta</div>
+        <div class="track-subtitle">Validação, treinamento e processos internos de operações</div>
+      </div>
+      <div class="track-steps" style="justify-content:center;align-items:center;min-height:80px;">
+        <div style="font-size:11px;color:rgba(255,255,255,0.25);font-weight:400;text-align:center;line-height:1.6;">
+          Aguardando informações<br>e responsáveis
+        </div>
+      </div>
+    </div>
+    <div class="track-card">
+      <div class="track-accent-bar bar-purple"></div>
+      <div class="track-header">
+        <div class="track-owner">
+          <span class="owner-dot" style="background:rgba(255,255,255,0.2);"></span>
+          <span class="owner-label" style="color:rgba(255,255,255,0.2);">A definir</span>
+        </div>
+        <div class="track-title">UoE Silicon (M&amp;A)</div>
+        <div class="track-subtitle"></div>
+      </div>
+      <div class="track-steps" style="justify-content:center;align-items:center;min-height:80px;">
+        <div style="font-size:11px;color:rgba(255,255,255,0.25);font-weight:400;text-align:center;line-height:1.6;">
+          Aguardando informações<br>e responsáveis
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: TRAÇÃO USA -->
+<div class="page" id="page-usa">
+  <div class="page-header">
+    <div><div class="header-title">TRAÇÃO USA</div></div>
+  </div>
+  <div class="quarter-label">
+    <span class="quarter-badge q1-badge">Q1</span><span class="quarter-title">Operação 1.0</span>
+    <div class="quarter-divider-line"></div>
+  </div>
+  <div class="q1-block">
+    <div class="q1-title">Operação 1.0</div>
+    <div class="q1-items"><div class="q1-item" style="grid-column:1/-1;">Estruturar a operação nos EUA, incluindo precificação, contratos e logística, para viabilizar as primeiras vendas.</div></div>
+  </div>
+  <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+  <div class="quarter-label">
+    <span class="quarter-badge q2-badge">Q2</span>
+    <div class="quarter-divider-line"></div>
+  </div>
+  <div class="q2-grid" style="grid-template-columns:repeat(2, 1fr);">
+    <div class="track-card">
+      <div class="track-accent-bar bar-orange"></div>
+      <div class="track-header">
+        <div class="track-owner"><span class="owner-dot dot-orange"></span><span class="owner-label">Davi</span></div>
+        <div class="track-title">Validação de Certificação</div>
+        <div class="track-subtitle">Possibilidade de certificação de luminária</div>
+      </div>
+      <div class="track-steps">
+        <div class="step"><span class="step-num num-orange">1</span><span class="step-text"><strong>Teste de envio</strong> — luminária montada no BR para cadastro de NCM</span></div>
+        <div class="step"><span class="step-num num-orange">2</span><span class="step-text"><strong>Levantamento de requerimentos</strong> para certificação de luminária</span></div>
+      </div>
+    </div>
+    <div class="track-card">
+      <div class="track-accent-bar bar-red"></div>
+      <div class="track-header">
+        <div class="track-owner"><span class="owner-dot dot-red"></span><span class="owner-label">Turra</span></div>
+        <div class="track-title">Definição de Portfolio</div>
+        <div class="track-subtitle">Análise de combinações de luminária</div>
+      </div>
+      <div class="track-steps">
+        <div class="step"><span class="step-num num-red">1</span><span class="step-text"><strong>Análise comparativa</strong> de opções de combinação (driver + módulo + carcaça)</span></div>
+        <div class="step"><span class="step-num num-red">2</span><span class="step-text"><strong>Definição de produtos</strong> a serem certificados (modelos e combinações)</span></div>
+      </div>
+    </div>
+    <div class="track-card">
+      <div class="track-accent-bar bar-purple"></div>
+      <div class="track-header">
+        <div class="track-owner"><span class="owner-dot dot-purple"></span><span class="owner-label">Turra</span></div>
+        <div class="track-title">Levantamento de Custos</div>
+        <div class="track-subtitle">Produção e envio por opção</div>
+      </div>
+      <div class="track-steps">
+        <div class="step"><span class="step-num num-purple">1</span><span class="step-text"><strong>Custos de envio</strong> — Opção 1 e Opção 2 (luminária + tarifas)</span></div>
+        <div class="step"><span class="step-num num-purple">2</span><span class="step-text"><strong>Custos de produção local</strong> no caso de fabricação no BR</span></div>
+      </div>
+    </div>
+    <div class="track-card">
+      <div class="track-accent-bar bar-teal"></div>
+      <div class="track-header">
+        <div class="track-owner"><span class="owner-dot dot-teal"></span><span class="owner-label">Turra</span></div>
+        <div class="track-title">Levantamento de Investimentos</div>
+        <div class="track-subtitle">Mapeamento de custos necessários</div>
+      </div>
+      <div class="track-steps">
+        <div class="step"><span class="step-num num-teal">1</span><span class="step-text"><strong>Custos de certificação</strong> por família / modelo / combinação</span></div>
+        <div class="step"><span class="step-num num-teal">2</span><span class="step-text"><strong>Adaptação de linha</strong> de produção atual</span></div>
+        <div class="step"><span class="step-num num-teal">3</span><span class="step-text"><strong>Custos de estocagem</strong> eventuais</span></div>
+        <div class="step"><span class="step-num num-teal">4</span><span class="step-text"><strong>Treinamento e contratações</strong> para atender nova demanda</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: CONSOLIDAÇÃO INOVAÇÃO -->
+<div class="page" id="page-inovacao">
+  <div class="page-header">
+    <div><div class="header-title">CONSOLIDAÇÃO INOVAÇÃO</div></div>
+  </div>
+  <div class="quarter-label">
+    <span class="quarter-badge q1-badge">Q1</span><span class="quarter-title">Desenvolvimento e Performance de Produtos</span>
+    <div class="quarter-divider-line"></div>
+  </div>
+  <div class="q1-block">
+    <div class="q1-title">Desenvolvimento e Performance de Produtos</div>
+    <div class="q1-items"><div class="q1-item"><span style="display:block;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:8px;">Validação</span>BESS &amp; Bluewind</div><div class="q1-item"><span style="display:block;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:8px;">Otimização</span>LED Grow: Payback 1.0 e eficiência</div></div>
+  </div>
+  <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+  <div class="quarter-label">
+    <span class="quarter-badge q2-badge">Q2</span>
+    <div class="quarter-divider-line"></div>
+  </div>
+  <div class="q2-grid" style="grid-template-columns:repeat(3, 1fr);">
+    <div class="track-card">
+      <div class="track-accent-bar bar-orange"></div>
+      <div class="track-header">
+        <div class="track-owner"><span class="owner-dot dot-orange"></span><span class="owner-label">Anderson</span></div>
+        <div class="track-title">Definição e Contratação</div>
+        <div class="track-subtitle">Formação do time de inovação</div>
+      </div>
+      <div class="track-steps">
+        <div class="step"><span class="step-num num-orange">1</span><span class="step-text"><strong>Definição e descritivos</strong> das vagas</span></div>
+        <div class="step"><span class="step-num num-orange">2</span><span class="step-text"><strong>Abertura</strong> das vagas</span></div>
+        <div class="step"><span class="step-num num-orange">3</span><span class="step-text"><strong>Entrevistas iniciais</strong></span></div>
+        <div class="step"><span class="step-num num-orange">4</span><span class="step-text"><strong>Apresentação Silicon</strong></span></div>
+        <div class="step"><span class="step-num num-orange">5</span><span class="step-text"><strong>Entrevistas finais</strong></span></div>
+        <div class="step"><span class="step-num num-orange">6</span><span class="step-text"><strong>Contratação</strong></span></div>
+      </div>
+    </div>
+    <div class="track-card">
+      <div class="track-accent-bar bar-red"></div>
+      <div class="track-header">
+        <div class="track-owner"><span class="owner-dot dot-red"></span><span class="owner-label">Victor</span></div>
+        <div class="track-title">Estruturação do Framework</div>
+        <div class="track-subtitle">Metodologia de inovação</div>
+      </div>
+      <div class="track-steps">
+        <div class="step"><span class="step-num num-red">1</span><span class="step-text"><strong>Aprovação</strong> do framework de inovação</span></div>
+        <div class="step"><span class="step-num num-red">2</span><span class="step-text"><strong>Definição de responsabilidades</strong> — eng comercial × inovação</span></div>
+        <div class="step"><span class="step-num num-red">3</span><span class="step-text"><strong>Matriz esforço × impacto</strong> — criação de metodologia</span></div>
+      </div>
+    </div>
+    <div class="track-card">
+      <div class="track-accent-bar bar-purple"></div>
+      <div class="track-header">
+        <div class="track-owner"><span class="owner-dot dot-purple"></span><span class="owner-label">Victor</span></div>
+        <div class="track-title">Desenvolvimento e Execução</div>
+        <div class="track-subtitle">Cliente no centro da inovação</div>
+      </div>
+      <div class="track-steps">
+        <div class="step"><span class="step-num num-purple">1</span><span class="step-text"><strong>Captação de oportunidades</strong> com o cliente no centro — pesquisa e ideação</span></div>
+        <div class="step"><span class="step-num num-purple">2</span><span class="step-text"><strong>Metodologia Backwards</strong> — estruturação da iniciativa</span></div>
+        <div class="step"><span class="step-num num-purple">3</span><span class="step-text"><strong>Sistema de cotação rápida</strong> para projetos personalizados</span></div>
+        <div class="step"><span class="step-num num-purple">4</span><span class="step-text"><strong>Documentação</strong> das iniciativas</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(btn, id) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
